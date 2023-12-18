@@ -22,6 +22,7 @@
 
 .navbar-brand {
     font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .bi {
@@ -47,8 +48,9 @@
 }
 
 .nav-item {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding-bottom: 0.5rem;
+    font-weight: bold;
 }
 
     .nav-item:first-of-type {
@@ -60,7 +62,7 @@
     }
 
     .nav-item ::deep .nav-link {
-        color: #d7d7d7;
+        color: #ffffff;
         background: none;
         border: none;
         border-radius: 4px;
@@ -73,13 +75,13 @@
 
 .nav-item ::deep a.active {
     background-color: rgba(255,255,255,0.37);
-    color: white;
+    color: black;
 }
 
-.nav-item ::deep .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+    .nav-item ::deep .nav-link:hover {
+        background-color: rgba(255,255,255,0.37);
+        color: black;
+    }
 
 .nav-scrollable {
     display: none;
@@ -103,3 +105,4 @@
         overflow-y: auto;
     }
 }
+
