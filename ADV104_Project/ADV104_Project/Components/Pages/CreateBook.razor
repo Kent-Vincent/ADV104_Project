@@ -1,0 +1,59 @@
+﻿@page "/create-book"
+@using ADV104_Project.Entities
+@inject ADV104_Project.Services.FetchBookService BookService
+@inject ADV104_Project.Services.AddBookService AddBookService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<h3 style="text-align: center;">Create Book</h3>
+
+<div class="form-container">
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input id="quantity" @bind="newBook.Quantity" type="number" />
+    </div>
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input id="title" @bind="newBook.Title" />
+    </div>
+    <div class="form-group">
+        <label for="author">Author:</label>
+        <input id="author" @bind="newBook.Author" />
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input id="description" @bind="newBook.Description" />
+    </div>
+
+    <div class="button-group">
+        <button class="save-button" @onclick="SaveNewBook">Save</button>
+        <button class="cancel-button" @onclick="Cancel">Cancel</button>
+    </div>
+</div>
+
+@code {
+    Book newBook = new Book();
+
+    async Task SaveNewBook()
+    {
+        if (string.IsNullOrWhiteSpace(newBook.Title)
+            || string.IsNullOrWhiteSpace(newBook.Quantity.ToString())
+            || string.IsNullOrWhiteSpace(newBook.Author)
+            || string.IsNullOrWhiteSpace(newBook.Description))
+        {
+            return;
+        }
+
+        // Save the new book to the database
+        await AddBookService.AddBookAsync(newBook);
+
+        // After saving, navigate back to the main page
+        NavigationManager.NavigateTo("/books");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/books");
+    }
+}

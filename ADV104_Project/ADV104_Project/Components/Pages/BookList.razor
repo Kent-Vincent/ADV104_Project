@@ -1,0 +1,73 @@
+﻿@page "/books"
+@using ADV104_Project.Entities
+@inject ADV104_Project.Services.FetchBookService BookService
+@inject ADV104_Project.Services.DeleteBookService DeleteBookService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<h3>BookList</h3>
+
+<div style="text-align: right;">
+    <button class="create-book-button" @onclick="AddNewBook">Create Book</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Quantity</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Books)
+        {
+            <tr>
+                <td>@book.ID</td>
+                <td>@book.Quantity</td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Description</td>
+                <td>
+                    <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
+                    <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Book> Books;
+
+    protected override void OnInitialized()
+    {
+        Books = BookService.GetAllBooks();
+    }
+
+    public void AddNewBook()
+    {
+        NavigationManager.NavigateTo("/create-book");
+    }
+
+    public void EditBook(int bookId)
+    {
+        NavigationManager.NavigateTo($"/edit-book/{bookId}");
+    }
+
+    public async Task DeleteBook(int bookId)
+    {
+        var confirmDelete = await DeleteBookService.ConfirmDeleteBook(bookId);
+
+        if (confirmDelete)
+        {
+            Books = BookService.GetAllBooks();
+        }
+        
+    }
+
+}

@@ -1,5 +1,8 @@
 using ADV104_Project.Client.Pages;
 using ADV104_Project.Components;
+using ADV104_Project.Data;
+using ADV104_Project.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<AddBookService>();
+builder.Services.AddScoped<EditBookService>();
+builder.Services.AddScoped<DeleteBookService>();
+builder.Services.AddScoped<FetchBookService>();
+
 
 var app = builder.Build();
 
@@ -29,7 +41,6 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Counter).Assembly);
+    .AddInteractiveWebAssemblyRenderMode();
 
 app.Run();

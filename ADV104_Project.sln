@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV104_Project", "ADV104_Project\ADV104_Project\ADV104_Project.csproj", "{0B6CFA60-A952-4E9D-A19E-73FCDB4AA65F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADV104_Project", "ADV104_Project\ADV104_Project\ADV104_Project.csproj", "{0B6CFA60-A952-4E9D-A19E-73FCDB4AA65F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADV104_Project.Client", "ADV104_Project\ADV104_Project.Client\ADV104_Project.Client.csproj", "{B4DA2F09-E3DB-494C-AF3E-378E137C8ED6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADV104_Project.Client", "ADV104_Project\ADV104_Project.Client\ADV104_Project.Client.csproj", "{B4DA2F09-E3DB-494C-AF3E-378E137C8ED6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

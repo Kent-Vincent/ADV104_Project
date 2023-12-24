@@ -1,0 +1,74 @@
+﻿@page "/edit-book/{id:int}"
+@inject ADV104_Project.Services.FetchBookService BookService
+@inject ADV104_Project.Services.EditBookService EditBookService
+@using ADV104_Project.Entities
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<h3>Edit Book</h3>
+
+@if (book == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="form-container">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input id="title" @bind="book.Title" />
+        </div>
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input id="author" @bind="book.Author" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input id="description" @bind="book.Description" />
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input id="quantity" @bind="book.Quantity" />
+        </div>
+
+        <div class="button-group">
+            <button class="save-button" @onclick="SaveChanges">Save Changes</button>
+            <button class="cancel-button" @onclick="Cancel">Cancel</button>
+        </div>
+    </div>
+}
+
+@code {
+    Book book;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        book = BookService.GetBookById(Id);
+    }
+
+    void SaveChanges()
+    {
+        // Check if required fields are filled
+        if (string.IsNullOrWhiteSpace(book.Title)
+            || string.IsNullOrWhiteSpace(book.Author)
+            || string.IsNullOrWhiteSpace(book.Description)
+            || string.IsNullOrWhiteSpace(book.Quantity.ToString()))
+        {
+            // Handle the case where required fields are not filled
+            // You might want to show an error message or prevent saving
+            return;
+        }
+        EditBookService.UpdateBook(book);
+
+        NavigationManager.NavigateTo("/books");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/books");
+    }
+}
