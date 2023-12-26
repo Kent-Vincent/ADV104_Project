@@ -4,6 +4,7 @@
 @inject ADV104_Project.Services.DeleteBookService DeleteBookService
 @inject ADV104_Project.Services.AddBookService AddBookService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 @inject ADV104_Project.Data.DataContext DbContext
 @rendermode InteractiveServer
 @attribute [StreamRendering]
@@ -46,9 +47,9 @@
                 <td>@book.Author</td>
                 <td>@book.Description</td>
                 <td>
+                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>
                     <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
                     <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
-                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>  <!-- Pass the book object to the method -->
                 </td>
             </tr>
         }
@@ -75,11 +76,20 @@
 
     public async Task DeleteBook(int bookId)
     {
-        var confirmDelete = await DeleteBookService.ConfirmDeleteBook(bookId);
+        var confirmDelete = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this book?");
 
         if (confirmDelete)
         {
-            Books = BookService.GetAllBooks();
+            // Remove the book from the UI
+            Books.RemoveAll(b => b.ID == bookId);
+
+            // Remove the book from the database
+            var bookToDelete = DbContext.Books.Find(bookId);
+            if (bookToDelete != null)
+            {
+                DbContext.Books.Remove(bookToDelete);
+                await DbContext.SaveChangesAsync();
+            }
         }
     }
 
@@ -90,22 +100,17 @@
             book.Quantity -= 1;
 
             var rentedBook = new RentBook
-            {
-                ID = book.ID,
-                Quantity = 1,
-                Title = book.Title,
-                Author = book.Author,
-                Description = book.Description,
-                ImageUrl = book.ImageUrl
-            };
-
-            // Add rented book to RentBooks DbSet
+                {
+                    ID = book.ID,
+                    Quantity = 1,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Description = book.Description,
+                    ImageUrl = book.ImageUrl
+                };
             DbContext.RentBooks.Add(rentedBook);
 
-            // Save changes to the database
             await DbContext.SaveChangesAsync();
-
-            // Update the book list in the UI
             StateHasChanged();
         }
         else

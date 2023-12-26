@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ADV104_Project.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231226142301_imageUrl")]
-    partial class imageUrl
+    [Migration("20231226150310_ImageUrl")]
+    partial class ImageUrl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

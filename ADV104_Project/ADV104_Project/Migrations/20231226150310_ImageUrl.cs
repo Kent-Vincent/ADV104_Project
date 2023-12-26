@@ -5,7 +5,7 @@
 namespace ADV104_Project.Migrations
 {
     /// <inheritdoc />
-    public partial class imageUrl : Migration
+    public partial class ImageUrl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,4 +1,16 @@
-﻿.form-container {
+﻿body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
     max-width: 400px;
     margin: auto;
     padding: 20px;

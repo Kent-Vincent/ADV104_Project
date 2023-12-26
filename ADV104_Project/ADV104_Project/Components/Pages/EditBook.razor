@@ -6,38 +6,115 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
-<h3>Edit Book</h3>
-
 @if (book == null)
 {
     <p>Loading...</p>
 }
 else
 {
-    <div class="form-container">
-        <div class="form-group">
-            <label for="title">Title:</label>
-            <input id="title" @bind="book.Title" />
-        </div>
-        <div class="form-group">
-            <label for="author">Author:</label>
-            <input id="author" @bind="book.Author" />
-        </div>
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <input id="description" @bind="book.Description" />
-        </div>
-        <div class="form-group">
-            <label for="quantity">Quantity:</label>
-            <input id="quantity" @bind="book.Quantity" />
-        </div>
+    <div class="container">
+        <div class="card">
+            <h3 style="text-align: center;">Edit Book</h3>
+            <div class="form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input id="title" @bind="book.Title" />
+                </div>
+                <div class="form-group">
+                    <label for="author">Author:</label>
+                    <input id="author" @bind="book.Author" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input id="description" @bind="book.Description" />
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input id="quantity" @bind="book.Quantity" />
+                </div>
 
-        <div class="button-group">
-            <button class="save-button" @onclick="SaveChanges">Save Changes</button>
-            <button class="cancel-button" @onclick="Cancel">Cancel</button>
+                <div class="button-group">
+                    <button class="btn btn-success" @onclick="SaveChanges">Save Changes</button>
+                    <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 }
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        background: url('your-background-image-url') center/cover no-repeat;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        transition: background 0.3s ease;
+        border: 2px solid white;
+    }
+
+    h3 {
+        text-align: center;
+        color: black;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: black;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .button-group {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #f44336;
+        color: white;
+    }
+</style>
 
 @code {
     Book book;
