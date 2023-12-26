@@ -48,7 +48,7 @@
                 <td>
                     <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
                     <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
-                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>  <!-- Pass the book object to the method -->
+                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>
                 </td>
             </tr>
         }
@@ -90,22 +90,16 @@
             book.Quantity -= 1;
 
             var rentedBook = new RentBook
-            {
-                ID = book.ID,
-                Quantity = 1,
-                Title = book.Title,
-                Author = book.Author,
-                Description = book.Description,
-                ImageUrl = book.ImageUrl
-            };
-
-            // Add rented book to RentBooks DbSet
+                {
+                    ID = book.ID,
+                    Quantity = 1,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Description = book.Description,
+                    ImageUrl = book.ImageUrl
+                };
             DbContext.RentBooks.Add(rentedBook);
-
-            // Save changes to the database
             await DbContext.SaveChangesAsync();
-
-            // Update the book list in the UI
             StateHasChanged();
         }
         else
