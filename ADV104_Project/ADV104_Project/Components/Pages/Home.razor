@@ -2,6 +2,56 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
+        text-align: center;
+    }
 
-Welcome to your new app.
+    .welcome-container {
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        max-width: 600px;
+        margin: 15% auto 0 auto;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    p {
+        color: #666;
+        font-size: 1.2em;
+        margin-bottom: 30px;
+    }
+
+    .explore-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1.2em;
+        text-decoration: none;
+        color: #fff;
+        background-color: #0071e2;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .explore-button:hover {
+            background-color: #b7e4c7;
+        }
+</style>
+
+
+<div class="welcome-container">
+    <h1>Online Book Management (Admin)</h1>
+    <p>Manage your book inventory and administrative tasks with ease.</p>
+    <p>Explore online book Management.</p>
+    <a href="/books" class="explore-button">Explore Books</a>
+</div>
+

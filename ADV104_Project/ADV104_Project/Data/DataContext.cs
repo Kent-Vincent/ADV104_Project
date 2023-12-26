@@ -10,8 +10,7 @@ namespace ADV104_Project.Data
         {
         
         }
-        
-
-        public DbSet<Book> Books { get; set; } 
+        public DbSet<Book> Books { get; set; }
+        public DbSet<RentBook> RentBooks { get; set; }
     }
 }

@@ -2,11 +2,24 @@
 @using ADV104_Project.Entities
 @inject ADV104_Project.Services.FetchBookService BookService
 @inject ADV104_Project.Services.DeleteBookService DeleteBookService
+@inject ADV104_Project.Services.AddBookService AddBookService
 @inject NavigationManager NavigationManager
+@inject ADV104_Project.Data.DataContext DbContext
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
-<h3>BookList</h3>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
+        text-align: center;
+    }
+</style>
+
+<h3>BOOK LIST</h3>
 
 <div style="text-align: right;">
     <button class="create-book-button" @onclick="AddNewBook">Create Book</button>
@@ -19,7 +32,7 @@
             <th>Quantity</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Description</th>
+            <th>Genre</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -35,6 +48,7 @@
                 <td>
                     <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
                     <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
+                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>  <!-- Pass the book object to the method -->
                 </td>
             </tr>
         }
@@ -67,7 +81,36 @@
         {
             Books = BookService.GetAllBooks();
         }
-        
     }
 
+    public async Task Rentbook(Book book)
+    {
+        if (book != null && book.Quantity > 0)
+        {
+            book.Quantity -= 1;
+
+            var rentedBook = new RentBook
+            {
+                ID = book.ID,
+                Quantity = 1,
+                Title = book.Title,
+                Author = book.Author,
+                Description = book.Description,
+                ImageUrl = book.ImageUrl
+            };
+
+            // Add rented book to RentBooks DbSet
+            DbContext.RentBooks.Add(rentedBook);
+
+            // Save changes to the database
+            await DbContext.SaveChangesAsync();
+
+            // Update the book list in the UI
+            StateHasChanged();
+        }
+        else
+        {
+            Console.WriteLine("Book not available for rent.");
+        }
+    }
 }

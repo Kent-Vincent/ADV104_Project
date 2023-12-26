@@ -22,7 +22,6 @@
 
 .navbar-brand {
     font-size: 1.1rem;
-    font-weight: bold;
 }
 
 .bi {
@@ -48,9 +47,8 @@
 }
 
 .nav-item {
-    font-size: 1rem;
+    font-size: 0.9rem;
     padding-bottom: 0.5rem;
-    font-weight: bold;
 }
 
     .nav-item:first-of-type {
@@ -62,7 +60,7 @@
     }
 
     .nav-item ::deep .nav-link {
-        color: #d7d7d7;
+        color: white;
         background: none;
         border: none;
         border-radius: 4px;
@@ -74,15 +72,17 @@
         font-weight: bold;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
-}
+    .nav-item ::deep a.active {
+        background-color: rgba(255,255,255,0.37);
+        color: black;
+        font-weight: bold;
+    }
 
-.nav-item ::deep .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+    .nav-item ::deep .nav-link:hover {
+        background-color: rgba(255,255,255,0.2);
+        color: black;
+        font-weight: bold;
+    }
 
 .nav-scrollable {
     display: none;
@@ -105,4 +105,3 @@
         overflow-y: auto;
     }
 }
-
