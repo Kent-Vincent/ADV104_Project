@@ -25,6 +25,10 @@
         <label for="description">Description:</label>
         <input id="description" @bind="newBook.Description" />
     </div>
+    <div class="form-groud">
+        <label for="imageUrl">Image:</label>
+        <input id="imageUrl" @bind="newBook.ImageUrl" />
+    </div>
 
     <div class="button-group">
         <button class="save-button" @onclick="SaveNewBook">Save</button>
