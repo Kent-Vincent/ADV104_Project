@@ -160,10 +160,8 @@ else
             return;
         }
 
-        // Save the new book to the database
         await AddBookService.AddBookAsync(newBook);
 
-        // After saving, navigate back to the main page
         NavigationManager.NavigateTo("/books");
     }
 

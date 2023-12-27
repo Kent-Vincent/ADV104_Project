@@ -17,6 +17,7 @@ h3 {
     color: white;
     border: 2px solid white;
     backdrop-filter: blur(50px);
+    padding: 10px 10px 10px 10px;
 }
 
 .create-book-button, .edit-button, .delete-button {

@@ -28,12 +28,10 @@ namespace ADV104_Project.Services
                 existingBook.Author = updatedBook.Author;
                 existingBook.Description = updatedBook.Description;
                 existingBook.Quantity = updatedBook.Quantity;
+                existingBook.ImageUrl = updatedBook.ImageUrl;
 
-                // Save changes to the database
                 dataContext.SaveChanges();
             }
-            // Handle the case where the book with the specified ID is not found
-            // You might want to throw an exception or handle it based on your requirements
         }
     }
 }

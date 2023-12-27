@@ -18,6 +18,9 @@ builder.Services.AddScoped<AddBookService>();
 builder.Services.AddScoped<EditBookService>();
 builder.Services.AddScoped<DeleteBookService>();
 builder.Services.AddScoped<FetchBookService>();
+builder.Services.AddScoped<FetchRentedBookService>();
+builder.Services.AddScoped<DeleteRentedBookService>();
+builder.Services.AddScoped<UpdateBookQuantityService>();
 
 
 var app = builder.Build();

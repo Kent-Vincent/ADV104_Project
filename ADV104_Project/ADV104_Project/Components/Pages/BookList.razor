@@ -9,7 +9,6 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
-
 <style>
     body {
         margin: 0;
@@ -17,6 +16,55 @@
         font-family: 'Arial', sans-serif;
         background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
         text-align: center;
+    }
+
+    .book-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: black;
+        text-align: center;
+    }
+
+    .card-container {
+        display: block;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: 50px;
+    }
+
+    .cards {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin: 10px;
+        width: 300px;
+        backdrop-filter: blur(50px);
+    }
+
+    .card-image {
+        width: 100%;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .card-details {
+        padding: 10px;
+        text-align: left;
+        backdrop-filter: blur(50px);
+        color: black; /* Set text color to black */
+    }
+
+    .rent-button,
+    .edit-button,
+    .delete-button {
+        margin-top: 10px;
+        margin-left: 16px;
+    }
+
+    .detail {
+        font-weight: bold;
     }
 </style>
 
@@ -26,35 +74,24 @@
     <button class="create-book-button" @onclick="AddNewBook">Create Book</button>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Quantity</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var book in Books)
-        {
-            <tr>
-                <td>@book.ID</td>
-                <td>@book.Quantity</td>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Description</td>
-                <td>
-                    <button class="rent-button" @onclick="()=> Rentbook(book)">Rent</button>
-                    <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
-                    <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="card-container">
+    @foreach (var book in Books)
+    {
+        <div class="cards">
+            <img src="@book.ImageUrl" alt="Book Image" class="card-image" />
+            <div class="card-details">
+                <h5 class="book-title">@book.Title</h5>
+                <p class="detail">ID: @book.ID</p>
+                <p class="detail">QUANTITY: @book.Quantity</p>
+                <p class="detail">AUTHOR: @book.Author</p>
+                <p class="detail">GENRE: @book.Description</p>
+                <button class="rent-button" @onclick="()=> RentBook(book)">Rent</button>
+                <button class="edit-button" @onclick="() => EditBook(book.ID)">Edit</button>
+                <button class="delete-button" @onclick="() => DeleteBook(book.ID)">Delete</button>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
     List<Book> Books;
@@ -80,10 +117,7 @@
 
         if (confirmDelete)
         {
-            // Remove the book from the UI
             Books.RemoveAll(b => b.ID == bookId);
-
-            // Remove the book from the database
             var bookToDelete = DbContext.Books.Find(bookId);
             if (bookToDelete != null)
             {
@@ -93,29 +127,34 @@
         }
     }
 
-    public async Task Rentbook(Book book)
+    public async Task RentBook(Book book)
     {
-        if (book != null && book.Quantity > 0)
-        {
-            book.Quantity -= 1;
+        var confirmRent = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to rent this book?");
 
-            var rentedBook = new RentBook
-                {
-                    ID = book.ID,
-                    Quantity = 1,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Description = book.Description,
-                    ImageUrl = book.ImageUrl
-                };
-            DbContext.RentBooks.Add(rentedBook);
-
-            await DbContext.SaveChangesAsync();
-            StateHasChanged();
-        }
-        else
+        if (confirmRent)
         {
-            Console.WriteLine("Book not available for rent.");
+            if (book != null && book.Quantity > 0)
+            {
+                book.Quantity -= 1;
+
+                var rentedBook = new RentBook
+                    {
+                        Quantity = 1,
+                        Title = book.Title,
+                        Author = book.Author,
+                        Description = book.Description,
+                        ImageUrl = book.ImageUrl
+                    };
+
+                DbContext.RentBooks.Add(rentedBook);
+
+                await DbContext.SaveChangesAsync();
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine("Book not available for rent.");
+            }
         }
     }
 }

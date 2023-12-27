@@ -1,7 +1,140 @@
-﻿@page "/returnBook"
+﻿    @using ADV104_Project.Entities
+    @inject ADV104_Project.Services.FetchRentedBookService RentedBookService
+    @inject ADV104_Project.Services.DeleteRentedBookService DeleteRentedBookService
+    @inject ADV104_Project.Services.UpdateBookQuantityService UpdateBookQuantityService
+    @inject NavigationManager NavigationManager
+    @inject IJSRuntime JSRuntime
+    @inject ADV104_Project.Data.DataContext DbContext
+    @rendermode InteractiveServer
+    @attribute [StreamRendering]
 
-<h3>Rented Books</h3>
+    @page "/returnBook"
+
+    <h3 class="page-title">RENTED BOOKS</h3>
+
+    <div class="card-container">
+        @foreach (var rentedBook in RentedBooks)
+        {
+            <div class="cards">
+                <img src="@rentedBook.ImageUrl" alt="Book Image" class="card-image" />
+                <div class="card-details">
+                    <h5 class="book-title">@rentedBook.Title</h5>
+                    <p class="author">Author: @rentedBook.Author</p>
+                    <p class="description">Genre: @rentedBook.Description</p>
+                    <button class="return-button" @onclick="()=> ReturnRentedBook(rentedBook)">Return</button>
+                </div>
+            </div>
+        }
+    </div>
 
 @code {
+    List<RentBook> RentedBooks;
 
-}
+    protected override void OnInitialized()
+    {
+        RentedBooks = RentedBookService.GetAllRentedBooks();
+    }
+
+   
+    public async Task ReturnRentedBook(RentBook rentedBook)
+    {
+        var confirmReturn = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to return this book?");
+
+        if (confirmReturn)
+        {
+            await DeleteRentedBookService.DeleteRentedBookAsync(rentedBook);
+
+            await UpdateBookQuantityService.UpdateBookQuantityAsync(rentedBook.Title, rentedBook.Description, 1);
+
+            RentedBooks.Remove(rentedBook);
+        }
+    }
+   }
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://imgs.search.brave.com/z50aYH_O2jRtheNLW15kroy9f2aTS4SL1EL0XDhQhWE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE0/ODE2Mjc4MzQ4NzYt/Yjc4MzNlOGY1NTcw/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJH/bGljbUZ5ZVh4bGJu/d3dmSHd3Zkh4OE1B/PT0') center/cover no-repeat;
+        }
+
+        .page-title {
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(50px);
+            padding: 10px 10px 10px 10px;
+        }
+
+        .card-container {
+            display: block;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+
+        .cards {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            margin: 10px;
+            width: 300px;
+            backdrop-filter: blur(50px);
+        }
+
+            .cards:hover {
+                transform: scale(1.05);
+            }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .card-details {
+            padding: 20px;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            backdrop-filter: blur(10px); 
+        }
+
+        .book-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: black;
+            text-align: center;
+        }
+
+        .author {
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .description {
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        .return-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            width: calc(100% - 40px); 
+            margin: 0 20px;
+            display: block;
+        }
+
+            .return-button:hover {
+                background-color: #45a049;
+            }
+    </style>
