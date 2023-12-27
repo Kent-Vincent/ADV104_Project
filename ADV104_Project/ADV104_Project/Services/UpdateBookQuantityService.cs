@@ -25,7 +25,6 @@ namespace ADV104_Project.Services
                 book.Quantity += quantityToAdd;
                 await dataContext.SaveChangesAsync();
             }
-            // You may want to handle the case where the book with the specified title and genre is not found.
         }
     }
 }

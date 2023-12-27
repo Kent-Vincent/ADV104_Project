@@ -16,7 +16,6 @@ namespace ADV104_Project.Services
 
         public async Task DeleteRentedBookAsync(RentBook rentedBook)
         {
-            // Assuming RentBooks is the DbSet in DataContext
             dataContext.RentBooks.Remove(rentedBook);
             await dataContext.SaveChangesAsync();
         }
